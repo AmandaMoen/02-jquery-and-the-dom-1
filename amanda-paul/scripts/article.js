@@ -21,14 +21,11 @@ Article.prototype.toHtml = function () {
   // The benefit is that it copies elements of the HTML, rewrites them to the DOM, saving us from having to manually update the HTML every time a new blog post is made.
 
   let $newArticle = $('article.template').clone().removeClass('template');
-  /* TODO: This cloned article still has a class of template. In our modules.css stylesheet, we should give all elements with a class of template a display of none so that our template does not display in the browser. But, we also need to make sure we're not accidentally hiding our cloned article. */
-
-
+  /* DONE: This cloned article still has a class of template. In our modules.css stylesheet, we should give all elements with a class of template a display of none so that our template does not display in the browser. But, we also need to make sure we're not accidentally hiding our cloned article. */
 
   if (!this.publishedOn) $newArticle.addClass('draft');
   $newArticle.attr('data-category', this.category);
-
-  /* TODO: Now use jQuery traversal and setter methods to fill in the rest of the current template clone with values of the properties of this particular Article instance.
+  /* DONE: Now use jQuery traversal and setter methods to fill in the rest of the current template clone with values of the properties of this particular Article instance.
     We need to fill in:
       1. author name,
       2. author url,
@@ -39,7 +36,6 @@ Article.prototype.toHtml = function () {
   $newArticle.find('address a').attr('href', this.authorUrl);
   $newArticle.find('h1').text(this.title);
   $newArticle.find('section').html(this.body);
-  // console.log($newArticle.find('h1'));
 
   // REVIEW: Display the date as a relative number of 'days ago'
   $newArticle.find('time').html('about ' + parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000) + ' days ago');
@@ -52,28 +48,12 @@ rawData.sort(function (a, b) {
   return (new Date(b.publishedOn)) - (new Date(a.publishedOn));
 });
 
-// TODO: Refactor these for loops using the .forEach() array method.
+// DONE: Refactor these for loops using the .forEach() array method.
 
-
-// for(let i = 0; i < rawData.length; i++) {
-//   articles.push(new Article(rawData[i]));
-// }
-
-// ^^raw data for each refactored below:======================
-rawData.forEach(function (i) {
-  articles.push(new Article(i));
+rawData.forEach(function(articleObject) {
+  articles.push(new Article(articleObject));
 });
 
-
-// for(let i = 0; i < articles.length; i++) {
-//   $('#articles').append(articles[i].toHtml());
-// }
-
-// ^^articles for each refactored below:======================
-
-
-articles.forEach(function (i) {
-  $('#articles').append(i.toHtml());
+articles.forEach(function(articleObject) {
+  $('#articles').append(articleObject.toHtml());
 });
-
-
